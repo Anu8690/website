@@ -18,7 +18,6 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCr
     .then((result) => app.listen(3000))
     .catch((err) => console.log(err));
 
-
 app.get('*', checkUser);
 app.get('/', (req, res) => res.render('home', {title: 'home'}));
 app.use(authRoutes);

@@ -8,7 +8,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-9 col-lg-8 mx-auto">
-                            <h3 class="login-heading mb-4">Welcome back!</h3>
+                            <h3 class="login-heading mb-4"><b>Ready to black belt your Interview Skills?</b></h3>
                             <form>
                                 <div class="form-label-group">
                                     <input type="email" id="inputEmail" name ="email" class="form-control" placeholder="Email address" required autofocus>
@@ -20,7 +20,7 @@
                                     <label for="inputPassword">Password</label>
                                     <div class="password error"></div>
                                 </div>
-                                <button class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">Create Account</button>
+                                <input class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit" value="Create Account">
                             </form>
                         </div>
                     </div>
@@ -29,8 +29,6 @@
         </div>
     </div>
 </div>
-
-<%- include('partials/footer'); -%>
 
 <script>
     const form = document.querySelector('form');
@@ -45,8 +43,8 @@
         passwordError.textContent = '';
 
         //get values
-        const email = form.email.value;
-        const password = form.password.value;
+        const email = form.inputEmail.value;
+        const password = form.inputPassword.value;
 
         try{
             const res = await fetch('/signUp', {
@@ -54,10 +52,22 @@
                 body = JSON.stringify({ email, password }),
                 headers: { 'Content-type' : 'application/json' }
             });
+            const data = await res.json();
+            console.log(data);
+            if (data.errors) {
+                emailError.textContent = data.errors.email;
+                passwordError.textContent = data.errors.password;
+            }
+            if (data.user) {
+                location.assign('/');
+            }
         }
         catch{
             console.log(err);
         }
-    })
+    });
 </script>
+
+</body>
+</html>
   

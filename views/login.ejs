@@ -41,9 +41,9 @@
 <script>
     const form = document.querySelector('form');
     const emailError = document.querySelector('.email.error');
-    const passwordError = document.querySelector('.pasword.error');
+    const passwordError = document.querySelector('.password.error');
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         emailError.textContent = '';
