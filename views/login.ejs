@@ -11,14 +11,16 @@
                             <h3 class="login-heading mb-4">Welcome back!</h3>
                             <form>
                                 <div class="form-label-group">
-                                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                                    <input type="email" id="inputEmail" name= "email" class="form-control" placeholder="Email address" required autofocus>
                                     <label for="inputEmail">Email address</label>
+                                    <div class="email error"></div>
                                     <!-- Email address -->
                                 </div>
   
                                 <div class="form-label-group">
-                                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                                    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
                                     <label for="inputPassword">Password</label>
+                                    <div class ="passwrod error"></div>
                                 </div>
   
                                 <button class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">Log in</button>
@@ -35,4 +37,41 @@
 </div>
 
 <%- include('partials/footer'); -%>
+
+<script>
+    const form = document.querySelector('form');
+    const emailError = document.querySelector('.email.error');
+    const passwordError = document.querySelector('.pasword.error');
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        emailError.textContent = '';
+        passwordError.textContent = '';
+
+        // get values
+        const email = form.email.value;
+        const password = form.password.value;
+  
+        try {
+            const res = await fetch('/login', { 
+                method: 'POST', 
+                body: JSON.stringify({ email, password }),
+                headers: {'Content-Type': 'application/json'}
+            });
+            const data = await res.json();
+            console.log(data);
+            if (data.errors) {
+                emailError.textContent = data.errors.email;
+                passwordError.textContent = data.errors.password;
+            }
+            if (data.user) {
+                location.assign('/');
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }        
+    });
+</script>
   
